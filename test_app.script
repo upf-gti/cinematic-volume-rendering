@@ -1,0 +1,130 @@
+// write your script here!
+Interface {
+  Inputs {}
+  Outputs {}
+  Parameters {
+    Field source {type = String value = ""}
+    Field LUTs {type = Enum 
+      value = "CVRT"
+      items {
+        item Arotic_valve {title = "Arotic valve"}
+        item Coronaries {title = "Coronaries"}
+        item Coronary_Cinematic {title = "Coronary Cinematic"}
+        item CVRT {title = "CVRT"}
+        item Heart_Cinematic {title = "Heart Cinematic"}
+      }
+    }
+    Field Lighting {type = Bool value = False}
+    
+    Field cutEnable {type = Bool value = 0}
+    Field cutAddMode{type = Enum 
+      items {
+        item Add {}
+        item Subtract{}
+      }
+    }
+  }
+}
+
+
+Description {
+  
+}
+
+Commands {
+  source      = $(LOCAL)/test_app.py
+  initCommand = init
+  
+  FieldListener LUTs {
+    command = onTFChange
+  }
+  FieldListener cutEnable {
+    command = onCutEnable
+  }
+  FieldListener cutAddMode {
+    command = clipAction
+  }
+  FieldListener Lighting {
+    command = onChangingLights
+  }
+}
+
+Window Visualization {
+  preferredWidth  = 800
+  preferredHeight = 300
+  style {
+    colors {bg = lightgrey button = darkgray buttonText = black windowText = black base = darkgrey boxText = black editText = black}
+    titleFont {family = Calibri size = 12 weight = Normal}
+    boxFont {family = Calibri size = 12 weight = Normal}
+    
+  }
+  Vertical {
+    TabView {
+      TabViewItem General {
+        Box "Load data"{
+          Horizontal {
+            Field source {
+              title   = "Source Dir "
+              tooltip = "Browse the directory" 
+            }
+            Button {
+              title   = "Browse"
+              tooltip = "Provides a  browser for the directory (tree) to be parsed for DICOM files to be composed to volumes."
+              command = expandDirectoryName         
+            }
+            Button {
+              title   = "Import"
+              command = importData
+              tooltip = "Imports the selected DICOM files."
+            }
+            Button {
+              title   = "Clear"
+              command = clearLog
+              tooltip = "clear the volume log"
+            }
+          }
+        }
+        Box Tools {
+          Horizontal {
+            Field LUTs {
+              title      = "Presets: "        
+            }
+          //  Box {
+              CheckBox Lighting {
+                title = "Background light(IBL)"
+              }
+           // }
+              
+            Box {
+              Horizontal {
+                expandX         = 0
+          
+                CheckBox cutEnable {
+                  title = "Enable cutting"
+                }
+             
+                Box Action {
+                  RadioButtonGroup cutAddMode{
+                 
+                  }
+                }
+              }
+              
+            }
+          }
+        } 
+          Box "Viewer" {
+            Viewer SoCustomExaminerViewer.self {
+              clone           = NO
+              preferredWidth  = 800
+              preferredHeight = 500
+            }
+          }
+      }//Tabview General
+      
+  }
+    
+  }
+}
+
+
