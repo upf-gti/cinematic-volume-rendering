@@ -886,8 +886,8 @@ module SoPathTracerMaterial {
     horizonScattering = 1
     backScattering = 0
     horizonColor = "1 0.666666686534882 0.498039215803146"
-    metallic = 0.5
-    roughness = 0.54699999
+    metallic = 0.1
+    roughness = 0.94699999
     specularTint = 0
     sheenTint = 0
     sheen = 0
