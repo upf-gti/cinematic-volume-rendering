@@ -90,9 +90,7 @@ Window Visualization {
               title      = "Presets: "        
             }
           //  Box {
-              CheckBox Lighting {
-                title = "Background light(IBL)"
-              }
+             
            // }
               
             Box {
