@@ -2722,7 +2722,51 @@ module RunPythonScript {
     initCode = "*ctx.field("SoPathTracerBackgroundLight1.useIBL").value = True*"
     wakeUpCode = ""
     code = ""
-    finalizeCode = ""
+    finalizeCode = "import csv
+import itertools
+import numpy as np
+
+
+items = []
+lut = RunPythonScript_ctx.field("in2").value
+contents = 'C:/Users/irumb/Downloads/cinematic-volume-rendering-main/cinematic-volume-rendering-main/presets/'  
+csvLUT_path = contents + lut + ".csv"
+
+with open(csvLUT_path) as csvfile:    
+	csvReader = csv.reader(csvfile)    
+	for row in csvReader:        
+	  items.append(row)
+
+items = (np.delete(items, (0), axis=0)) 
+colorPoints = items[:,0:4]
+colorPoints = np.float_(colorPoints)
+alphaPoints = np.transpose(([items[:,0], items[:,-1]]))
+alphaPoints = np.float_(alphaPoints)
+
+colorPoints2 = str(colorPoints).replace('[','').replace(']',',')
+colorPoints2 = colorPoints2[:-2]
+colorPoints2 = '['+colorPoints2+']'
+
+alphaPoints2 = str(alphaPoints).replace('[','').replace(']',',')
+alphaPoints2 = alphaPoints2[:-2]
+alphaPoints2 = '['+alphaPoints2+']'
+
+ctx.field("SoLUTEditor.alphaPoints").value = alphaPoints2
+ctx.field("SoLUTEditor.colorPoints").value = colorPoints2
+
+lut_material = 'C:/Users/irumb/Downloads/cinematic-volume-rendering-main/cinematic-volume-rendering-main/presets/LUTs_Materials.csv'
+materialdict = {}
+with open(lut_material) as csvfile:  
+   reader = csv.reader(csvfile, delimiter=':')
+   for row in reader:
+     key,value = row
+     if key == lut:
+       materialdict[key]=[float(i) for i in value[1:-1].split(',')]
+       materialprop=(materialdict.get(key))
+       ctx.field("SoPathTracerMaterial.diffuse").value = (materialprop[0],materialprop[0],materialprop[0])
+       ctx.field("SoPathTracerMaterial.metallic").value = materialprop[1]
+       ctx.field("SoPathTracerMaterial.specular").value = materialprop[2]
+       ctx.field("SoPathTracerMaterial.roughness").value = materialprop[3]"
     showFields = TRUE
     showInitCode = TRUE
     showWakeUpCode = FALSE
