@@ -2573,7 +2573,56 @@ module RunPythonScript {
     initCode = "*ctx.field("SoPathTracerBackgroundLight1.useIBL").value = True*"
     wakeUpCode = ""
     code = ""
-    finalizeCode = ""
+    finalizeCode = "*import json
+
+# JSON file path and selected key
+json_file_path = r"path-to-json-file"
+
+
+selected_key = RunPythonScript_ctx.field("in2").value  # The key you want to extract
+
+with open(json_file_path, 'r') as json_file:
+    data = json.load(json_file)
+
+# Check if the selected key exists in the JSON data
+if selected_key in data:
+    selected_data = data[selected_key]
+    # Process the selected data as needed
+    
+    #list of lists
+    color_points = [[entry['position'], entry['RGB_r'], entry['RGB_g'], entry['RGB_b']] for entry in selected_data]
+    alpha_points = [[entry['position'], entry['RGB_a']] for entry in selected_data]
+    
+    #flatnned list
+    color_points1 = [val for entry in selected_data for val in [entry['position'], entry['RGB_r'], entry['RGB_g'], entry['RGB_b']]]
+    alpha_points1 = [val for entry in selected_data for val in [entry['position'], entry['RGB_a']]]
+    
+    color = ''
+    for i, num in enumerate(color_points1):
+        color += str(num)
+        # Add a comma after every 4 numbers, except for the last number
+        if (i + 1) % 4 == 0 and i != len(color_points1) - 1:
+            color += ', '
+        else:
+            color += ' '
+    
+    color = '['+color+']'
+    ctx.field('SoLUTEditor.colorPoints').setStringValue(color)
+    
+    alpha = ''
+    for i, num in enumerate(alpha_points1):
+        alpha += str(num)
+        # Add a comma after every 4 numbers, except for the last number
+        if (i + 1) % 2 == 0 and i != len(alpha_points1) - 1:
+            alpha += ', '
+        else:
+            alpha += ' '
+    
+    alpha = '['+alpha+']'
+    ctx.field('SoLUTEditor.alphaPoints').setStringValue(alpha)
+else:
+    print(f"Key '{selected_key}' not found in the preset data.")
+*"
     showFields = TRUE
     showInitCode = TRUE
     showWakeUpCode = FALSE
