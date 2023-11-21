@@ -5,13 +5,10 @@ Interface {
   Parameters {
     Field source {type = String value = ""}
     Field LUTs {type = Enum 
-      value = "CVRT"
+      value = "Preset1"
       items {
-        item Arotic_valve {title = "Arotic valve"}
-        item Coronaries {title = "Coronaries"}
-        item Coronary_Cinematic {title = "Coronary Cinematic"}
-        item CVRT {title = "CVRT"}
-        item Heart_Cinematic {title = "Heart Cinematic"}
+        item Preset1 {title = "Preset1"}
+        item Preset2 {title = "Preset2"}
       }
     }
     Field Lighting {type = Bool value = False}
