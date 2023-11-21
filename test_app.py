@@ -21,7 +21,7 @@ def clearLog():
 
 def init():
   print("Application started... ")
-  ctx.field("FieldListener.inParameter").value = "CVRT"
+  ctx.field("FieldListener.inParameter").value = "Preset1"
   print(ctx.field("FieldListener.inParameter").value)
   ctx.field("RunPythonScript1.finalize").touch()
 
