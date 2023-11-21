@@ -1,5 +1,5 @@
 {
-    "CVRT": [
+    "Preset1": [
         {
             "position": 62,
             "RGB_r": 0.9882353,
@@ -64,7 +64,7 @@
             "RGB_a": 0.0
         }
     ],
-    "Heart_Cinematic": [
+    "Preset2": [
         {
             "position": -169,
             "RGB_r": 1.0,
