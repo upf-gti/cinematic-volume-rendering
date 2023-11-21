@@ -2522,7 +2522,7 @@ module RunPythonScript {
     instanceName = RunPythonScript1
     in0 = ""
     in1 = ""
-    in2 = AAA_body
+    in2 = Preset1
     in3 = ""
     in4 = ""
     in5 = ""
